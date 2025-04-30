@@ -38,28 +38,15 @@ if (missingEnvVars.length > 0) {
     }
 }
 
-// Initialize Firebase
-let app;
-let analytics;
-let auth;
-let googleProvider;
+// Import Firebase modules
+import { initializeApp } from 'firebase/app';
+import { getAuth, GoogleAuthProvider } from 'firebase/auth';
+import { getAnalytics } from 'firebase/analytics';
 
-if (import.meta.env.MODE === 'development') {
-    // Use npm modules in development
-    const firebase = require('firebase/app');
-    require('firebase/auth');
-    require('firebase/analytics');
-    
-    app = firebase.initializeApp(firebaseConfig);
-    analytics = firebase.analytics();
-    auth = firebase.auth();
-    googleProvider = new firebase.auth.GoogleAuthProvider();
-} else {
-    // Use global Firebase in production
-    app = window.firebase.initializeApp(firebaseConfig);
-    analytics = window.firebase.analytics();
-    auth = window.firebase.auth();
-    googleProvider = new window.firebase.auth.GoogleAuthProvider();
-}
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
 
 export { auth, googleProvider };
