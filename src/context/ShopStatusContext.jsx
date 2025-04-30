@@ -10,7 +10,7 @@ export function ShopStatusProvider({ children }) {
 
   const refreshShopStatus = async () => {
     try {
-      const response = await axios.get("/api/shopStatus");
+      const response = await axios.get("http://localhost:5005/api/shopStatus");
       setShopStatus(response.data.status);
       setLastUpdated(new Date());
       console.log("Shop status refreshed from API:", response.data.status);
@@ -32,7 +32,7 @@ export function ShopStatusProvider({ children }) {
     let pollingInterval = null;
 
     const startSSE = () => {
-      eventSource = new EventSource("/api/shopStatus/stream");
+      eventSource = new EventSource("http://localhost:5005/api/shopStatus/stream");
       eventSource.onmessage = (event) => {
         try {
           const data = JSON.parse(event.data);
