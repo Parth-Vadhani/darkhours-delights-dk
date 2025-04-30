@@ -8,10 +8,21 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     emptyOutDir: true,
-    sourcemap: true
+    sourcemap: true,
+    rollupOptions: {
+      external: [
+        'firebase',
+        'firebase/auth',
+        'firebase/app',
+        'firebase/analytics'
+      ]
+    }
   },
   server: {
     port: 3000,
     open: true
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-router-dom', 'axios']
   }
 })

@@ -44,11 +44,21 @@ if (missingEnvVars.length > 0) {
 }
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+let app;
+let analytics;
+let auth;
+let googleProvider;
 
-// Initialize Firebase Authentication and Google Provider
-const auth = getAuth(app);
-const googleProvider = new GoogleAuthProvider();
+try {
+    app = initializeApp(firebaseConfig);
+    analytics = getAnalytics(app);
+    auth = getAuth(app);
+    googleProvider = new GoogleAuthProvider();
+} catch (error) {
+    console.error("Firebase initialization error:", error);
+    if (import.meta.env.MODE === "production") {
+        throw error;
+    }
+}
 
 export { auth, googleProvider };
