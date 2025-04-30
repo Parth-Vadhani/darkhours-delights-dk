@@ -1,33 +1,3 @@
-// Import the functions you need from the SDKs you need
-let firebase;
-if (import.meta.env.MODE === 'development') {
-  // Use npm modules in development
-  firebase = await import('firebase/app');
-  await import('firebase/auth');
-  await import('firebase/analytics');
-} else {
-  // Use CDN in production
-  const script = document.createElement('script');
-  script.src = 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
-  script.async = true;
-  document.head.appendChild(script);
-
-  const authScript = document.createElement('script');
-  authScript.src = 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-  authScript.async = true;
-  document.head.appendChild(authScript);
-
-  const analyticsScript = document.createElement('script');
-  analyticsScript.src = 'https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js';
-  analyticsScript.async = true;
-  document.head.appendChild(analyticsScript);
-
-  // Wait for Firebase to be available
-  await new Promise(resolve => {
-    script.onload = resolve;
-  });
-}
-
 // Firebase configuration using Vite environment variables
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "",
@@ -74,16 +44,22 @@ let analytics;
 let auth;
 let googleProvider;
 
-try {
+if (import.meta.env.MODE === 'development') {
+    // Use npm modules in development
+    const firebase = require('firebase/app');
+    require('firebase/auth');
+    require('firebase/analytics');
+    
     app = firebase.initializeApp(firebaseConfig);
     analytics = firebase.analytics();
     auth = firebase.auth();
     googleProvider = new firebase.auth.GoogleAuthProvider();
-} catch (error) {
-    console.error("Firebase initialization error:", error);
-    if (import.meta.env.MODE === "production") {
-        throw error;
-    }
+} else {
+    // Use global Firebase in production
+    app = window.firebase.initializeApp(firebaseConfig);
+    analytics = window.firebase.analytics();
+    auth = window.firebase.auth();
+    googleProvider = new window.firebase.auth.GoogleAuthProvider();
 }
 
 export { auth, googleProvider };
