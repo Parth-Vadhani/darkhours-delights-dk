@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/analytics';
 
 // Firebase configuration using Vite environment variables
 const firebaseConfig = {
@@ -50,10 +50,10 @@ let auth;
 let googleProvider;
 
 try {
-    app = initializeApp(firebaseConfig);
-    analytics = getAnalytics(app);
-    auth = getAuth(app);
-    googleProvider = new GoogleAuthProvider();
+    app = firebase.initializeApp(firebaseConfig);
+    analytics = firebase.analytics();
+    auth = firebase.auth();
+    googleProvider = new firebase.auth.GoogleAuthProvider();
 } catch (error) {
     console.error("Firebase initialization error:", error);
     if (import.meta.env.MODE === "production") {
