@@ -8,18 +8,7 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     emptyOutDir: true,
-    sourcemap: true,
-    rollupOptions: {
-      external: ['firebase', 'firebase/app', 'firebase/auth', 'firebase/analytics'],
-      output: {
-        globals: {
-          'firebase': 'firebase',
-          'firebase/app': 'firebase',
-          'firebase/auth': 'firebase.auth',
-          'firebase/analytics': 'firebase.analytics'
-        }
-      }
-    }
+    sourcemap: true
   },
   server: {
     port: 3000,
@@ -27,12 +16,5 @@ export default defineConfig({
   },
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom', 'axios']
-  },
-  resolve: {
-    alias: {
-      'firebase/app': 'firebase/app',
-      'firebase/auth': 'firebase/auth',
-      'firebase/analytics': 'firebase/analytics'
-    }
   }
 })

@@ -1,7 +1,32 @@
 // Import the functions you need from the SDKs you need
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/analytics';
+let firebase;
+if (import.meta.env.MODE === 'development') {
+  // Use npm modules in development
+  firebase = await import('firebase/app');
+  await import('firebase/auth');
+  await import('firebase/analytics');
+} else {
+  // Use CDN in production
+  const script = document.createElement('script');
+  script.src = 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+  script.async = true;
+  document.head.appendChild(script);
+
+  const authScript = document.createElement('script');
+  authScript.src = 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+  authScript.async = true;
+  document.head.appendChild(authScript);
+
+  const analyticsScript = document.createElement('script');
+  analyticsScript.src = 'https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js';
+  analyticsScript.async = true;
+  document.head.appendChild(analyticsScript);
+
+  // Wait for Firebase to be available
+  await new Promise(resolve => {
+    script.onload = resolve;
+  });
+}
 
 // Firebase configuration using Vite environment variables
 const firebaseConfig = {
